@@ -1,0 +1,15 @@
+html {
+    font-size: 26px;
+}
+
+body {
+
+    background-color: #f8f9fa !important;
+}
+
+.bg-purple {
+    background-color: #6f42c1;
+}
+.modal-body{
+    font-size: 18px;
+}

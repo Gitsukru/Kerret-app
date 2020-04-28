@@ -24,3 +24,48 @@
  *  - bitince local storrage a kayit etmeli
  *  - ve tekrar ana sayfaya geri dönmeli 
  */
+
+class DBManager {
+    constructor() {
+        this.db = localStorage;
+    }
+    setItem(key, value) {
+        value = JSON.stringify(value);
+        this.db.setItem(key, value);
+    }
+    getItem(key) {
+        const data = this.db.getItem(key);
+        return JSON.parse(data);
+    }
+}
+
+
+class AppManger {
+    constructor() {
+       // this.firstNumber = this.random();
+        //this.secondNumber = this.random();
+        this.appName = "Ogrenciler"
+        this.dbManager = new DBManager();
+        this.setStudentsRegister();
+    }
+    setStudentsRegister(){
+        const initialData = {
+            studentRegisterInfo: [
+                {name: "Ahmet", password:"1234"},
+                {name: "Ayse", password:"5678"},
+                {name: "Mehemet", password:"1379"},
+                {name: "Fatma", password:"2345"},
+            ]
+        };
+        this.dbManager.setItem(this.appName, initialData);
+    }
+}
+
+function getData() {
+    const manager = new AppManger();
+    return manager.dbManager.getItem(manager.appName);
+}
+console.log(getData());
+
+
+
