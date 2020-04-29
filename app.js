@@ -42,30 +42,81 @@ class DBManager {
 
 class AppManger {
     constructor() {
-       // this.firstNumber = this.random();
+        // this.firstNumber = this.random();
         //this.secondNumber = this.random();
         this.appName = "Ogrenciler"
         this.dbManager = new DBManager();
         this.setStudentsRegister();
     }
-    setStudentsRegister(){
+    setStudentsRegister() {
         const initialData = {
-            studentRegisterInfo: [
-                {name: "Ahmet", password:"1234"},
-                {name: "Ayse", password:"5678"},
-                {name: "Mehemet", password:"1379"},
-                {name: "Fatma", password:"2345"},
+            studentRegisterInfo: [{
+                    name: "Ahmet",
+                    password: "1234"
+                },
+                {
+                    name: "Ayse",
+                    password: "5678"
+                },
+                {
+                    name: "Mehemet",
+                    password: "1379"
+                },
+                {
+                    name: "Fatma",
+                    password: "2345"
+                },
             ]
         };
         this.dbManager.setItem(this.appName, initialData);
     }
+    userCheck(n, p) {
+        let checkStatus = false;
+        let registerUsers = this.dbManager.getItem(this.appName);
+        registerUsers.studentRegisterInfo.
+        filter(user => user.name === n && user.password === p ? checkStatus = true : false);
+        return checkStatus;
+    }
+    login(userName, userPass) {
+        if (this.userCheck(userName, userPass)) {
+           this.userIntro();
+            return
+        }
+        let loginCheckAlert = document.querySelector(".login-control-alert");
+        loginCheckAlert.style.display = "block";
+        setTimeout(function () {
+            loginCheckAlert.style.display = "none";
+        }, 1500)
+    }
+    userIntro(){
+    document.querySelector(".close").click();
+    }
 }
 
-function getData() {
-    const manager = new AppManger();
-    return manager.dbManager.getItem(manager.appName);
+
+
+function renderIntro() {
+    let scoreListTemplate = `  
+        <div class="d-flex align-items-center py-2 justify-content-between border-bottom border-gray">
+            <div class="d-flex align-items-center media">
+                <img class="mr-2" width="60" height="60" src="img/Avatar1.svg" alt="">
+                <p class="media-body  mb-0 small">
+                <strong class="d-block ">@__STUDENTNAME__</strong>
+                </p>
+            </div>
+                <h5 class="score-box m-0">
+                __STUDENTSCORE__ Puan
+                </h5>
+            </div>`
+    const introRender = new AppManger();
+    let localDB = introRender.dbManager.getItem(introRender.appName);
+    scoreListTemplate
+    
+    let loginBtn = document.querySelector(".login-button");
+    loginBtn.addEventListener("click", function () {
+        const userName = document.querySelector("#user-name").value;
+        const userPass = document.querySelector("#user-pass").value;
+        introRender.login(userName, userPass)
+    })
 }
-console.log(getData());
-
-
-
+renderIntro();
