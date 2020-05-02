@@ -34,6 +34,7 @@ let numberSecond = document.querySelector(".number-second");
 let quizGuess = document.querySelector(".quiz-guess");
 let quizGuessResult = document.querySelector(".quiz-guess-result");
 let quizHeading = document.querySelector(".quiz-heading");
+let timerBox = document.querySelector(".timer-box");
 
 
 let scoreListTemplate = `  
@@ -61,7 +62,6 @@ let quizHeadingTemplate = `<div class="d-flex align-items-center py-2 justify-co
 </h5>
 </div>`;
 
-
 class DBManager {
     constructor() {
         this.db = localStorage;
@@ -75,7 +75,6 @@ class DBManager {
         return JSON.parse(data);
     }
 }
-
 
 class AppManger {
     constructor() {
@@ -114,8 +113,6 @@ class AppManger {
         ]
         this.dbManager.setItem(this.appName, initialData);
     }
-
-
 
     userCheck(n, p) {
         let checkStatus = false;
@@ -164,8 +161,10 @@ class Student {
     constructor(data) {
         this.studentDB = new DBManager();
     }
-    studentNewData() {
-        console.log(this.studentDB.getItem("currentStudent"));
+    studentNewData(scorePlus) {
+        const availableData = this.studentDB.getItem("currentStudent");
+        availableData.score += scorePlus;
+        this.studentDB.setItem("currentStudent", availableData);
     }
 }
 
@@ -195,8 +194,8 @@ function renderIntro() {
 renderIntro();
 
 function reStart() {
-    const manager = new AppManger();
-    const introStudentData = manager.dbManager.getItem("currentStudent");
+    const manager = new DBManager();
+    const introStudentData = manager.getItem("currentStudent");
     //yeni yontem (!!=> true | (!=>false döndürür
     if (!!introStudentData) {
         document.querySelector("body").classList.add("is-login");
@@ -211,29 +210,59 @@ reStart();
 
 quizStartBtn.addEventListener("click", function () {
     quizStart();
+    timer(0,10);
     this.remove();
     quizMainBox.classList.remove("d-none");
     quizMainBox.classList.add("d-flex");
 })
 
+let counter = 10;
+
 function quizStart() {
     const generatedQuestion = new QuestionGenerator();
     numberFirst.innerHTML = generatedQuestion.firstNumber;
     numberSecond.innerHTML = generatedQuestion.secondNumber;
-    quizGuess.addEventListener("change", guessValue);
+    quizGuess.onchange = guessValue;
 
     function guessValue(e) {
         if (parseInt(generatedQuestion.result) === parseInt(e.target.value)) {
             quizGuessResult.innerHTML = "Dogru";
             quizGuessResult.classList.add("alert-success");
+            quizGuessResult.classList.remove("alert-danger");
+            const scoreDB = new Student();
+            scoreDB.studentNewData(10)
         } else {
             quizGuessResult.innerHTML = "Yanlis";
             quizGuessResult.classList.add("alert-danger");
+            quizGuessResult.classList.remove("alert-success");
         }
-
+        counter--;
+        e.target.value = "";
+        if (counter >= 0) {
+            quizStart();
+            console.log(counter);
+        }
+        timer(0, 10);
+        clearInterval(timeFire);
     }
-    const studentliveData = new Student();
-    studentliveData.studentNewData();
+    reStart();
+}
 
+function timer(minute, second) {
+    timeFire = setInterval(countDown, 1000);
 
+    function countDown() {
+        second--;
+        let currentTime = minute + ":" + (second < 10 ? "0" : "") + second;
+        timerBox.innerHTML = currentTime;
+        if (second == 0) {
+            if (minute > 0 && second == 0) {
+                minute--;
+                second = 60;
+            } else {
+                clearInterval(timeFire);
+                quizStart();
+            }
+        }
+    }
 }
