@@ -6,10 +6,95 @@ body {
 
     background-color: #f8f9fa !important;
 }
-
+*:focus{
+    outline: none !important;
+    box-shadow: none !important;
+}
 .bg-purple {
     background-color: #6f42c1;
 }
 .modal-body{
     font-size: 18px;
 }
+
+.quiz-start-img {
+    width: 100px;
+    height: 100px;
+    display: block;
+}
+
+.student-test-panel{
+    display:none;
+}
+
+.is-login .student-test-panel{
+    display:block;
+}
+
+
+.is-login .score-list-container{
+    display:none;
+}
+
+
+@keyframes flipInX {
+    from {
+      -webkit-transform: perspective(400px) rotate3d(1, 0, 0, 90deg);
+      transform: perspective(400px) rotate3d(1, 0, 0, 90deg);
+      -webkit-animation-timing-function: ease-in;
+      animation-timing-function: ease-in;
+      opacity: 0;
+    }
+  
+    40% {
+      -webkit-transform: perspective(400px) rotate3d(1, 0, 0, -20deg);
+      transform: perspective(400px) rotate3d(1, 0, 0, -20deg);
+      -webkit-animation-timing-function: ease-in;
+      animation-timing-function: ease-in;
+    }
+  
+    60% {
+      -webkit-transform: perspective(400px) rotate3d(1, 0, 0, 10deg);
+      transform: perspective(400px) rotate3d(1, 0, 0, 10deg);
+      opacity: 1;
+    }
+  
+    80% {
+      -webkit-transform: perspective(400px) rotate3d(1, 0, 0, -5deg);
+      transform: perspective(400px) rotate3d(1, 0, 0, -5deg);
+    }
+  
+    to {
+      -webkit-transform: perspective(400px);
+      transform: perspective(400px);
+    }
+  }
+  
+  .flipInX {
+    -webkit-backface-visibility: visible !important;
+    backface-visibility: visible !important;
+    -webkit-animation-name: flipInX;
+    animation-name: flipInX;
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+  }
+
+
+  .quiz-main-box{
+      font-size:70px;
+      font-weight: bold;
+  }
+  .quiz-main-box input{
+      width:160px;
+      padding: 10px 20px;
+      border-radius: 20px;
+      border: solid 4px black;
+      align-items: center;
+  }
+  .quiz-main-box .alert{
+    font-size: 40px;
+    line-height: 40px;
+  }
+

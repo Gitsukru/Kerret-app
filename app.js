@@ -25,6 +25,43 @@
  *  - ve tekrar ana sayfaya geri dönmeli 
  */
 
+let introScoreList = document.querySelector(".intro-score-list");
+let loginBtn = document.querySelector(".login-button");
+let quizStartBtn = document.querySelector(".quiz-start-btn");
+let quizMainBox = document.querySelector(".quiz-main-box");
+let numberFirst = document.querySelector(".number-first");
+let numberSecond = document.querySelector(".number-second");
+let quizGuess = document.querySelector(".quiz-guess");
+let quizGuessResult = document.querySelector(".quiz-guess-result");
+let quizHeading = document.querySelector(".quiz-heading");
+
+
+let scoreListTemplate = `  
+<div class="d-flex align-items-center py-2 justify-content-between border-bottom border-gray">
+    <div class="d-flex align-items-center media">
+        <img class="mr-2" width="60" height="60" src="img/Avatar__STUDENTICON__.svg" alt="">
+        <p class="media-body  mb-0 small">
+        <strong class="d-block ">@__STUDENTNAME__</strong>
+        </p>
+    </div>
+        <h5 class="score-box m-0">
+        __STUDENTSCORE__ Puan
+        </h5>
+    </div>`
+
+let quizHeadingTemplate = `<div class="d-flex align-items-center py-2 justify-content-between">
+<div class="d-flex align-items-center media">
+    <img class="mr-2" width="60" height="60" src="img/Avatar__STUDENTICON__.svg" alt="">
+    <p class="media-body  mb-0 small">
+        <strong class="d-block ">@__STUDENTNAME__ hosgeldin !</strong>
+    </p>
+</div>
+<h5 class="score-box m-0">
+    Toplam puanin : __STUDENTSCORE__
+</h5>
+</div>`;
+
+
 class DBManager {
     constructor() {
         this.db = localStorage;
@@ -47,76 +84,156 @@ class AppManger {
         this.appName = "Ogrenciler"
         this.dbManager = new DBManager();
         this.setStudentsRegister();
+        this.currentStudentData = null;
     }
     setStudentsRegister() {
-        const initialData = {
-            studentRegisterInfo: [{
-                    name: "Ahmet",
-                    password: "1234"
-                },
-                {
-                    name: "Ayse",
-                    password: "5678"
-                },
-                {
-                    name: "Mehemet",
-                    password: "1379"
-                },
-                {
-                    name: "Fatma",
-                    password: "2345"
-                },
-            ]
-        };
+        const initialData = [{
+                id: 1,
+                name: "Ahmet",
+                password: "1234",
+                score: 0
+            },
+            {
+                id: 2,
+                name: "Ayse",
+                password: "1234",
+                score: 0
+            },
+            {
+                id: 3,
+                name: "Mehemet",
+                password: "1234",
+                score: 0
+            },
+            {
+                id: 4,
+                name: "Fatma",
+                password: "1234",
+                score: 0
+            },
+        ]
         this.dbManager.setItem(this.appName, initialData);
     }
+
+
+
     userCheck(n, p) {
         let checkStatus = false;
         let registerUsers = this.dbManager.getItem(this.appName);
-        registerUsers.studentRegisterInfo.
+        registerUsers.
         filter(user => user.name === n && user.password === p ? checkStatus = true : false);
         return checkStatus;
     }
     login(userName, userPass) {
         if (this.userCheck(userName, userPass)) {
-           this.userIntro();
+            let allStudentData = this.dbManager.getItem(this.appName);
+            let currentStudentOldData = allStudentData.find(user => {
+                return user.name === userName
+            })
+            this.dbManager.setItem("currentStudent", currentStudentOldData);
+            this.currentStudentData = this.dbManager.getItem("currentStudent");
             return
         }
+
         let loginCheckAlert = document.querySelector(".login-control-alert");
         loginCheckAlert.style.display = "block";
         setTimeout(function () {
             loginCheckAlert.style.display = "none";
         }, 1500)
     }
-    userIntro(){
-    document.querySelector(".close").click();
+}
+
+class QuestionGenerator {
+    constructor() {
+        this.firstNumber = null;
+        this.secondNumber = null;
+        this.result = null;
+        this.randomMultiplacation();
+    }
+    randomMultiplacation() {
+        const firstNumber = Math.floor(Math.random() * 10);
+        const secondNumber = Math.floor(Math.random() * 10);
+        const result = firstNumber * secondNumber;
+        this.firstNumber = firstNumber;
+        this.secondNumber = secondNumber;
+        this.result = result;
+    }
+}
+
+class Student {
+    constructor(data) {
+        this.studentDB = new DBManager();
+    }
+    studentNewData() {
+        console.log(this.studentDB.getItem("currentStudent"));
     }
 }
 
 
 
+
 function renderIntro() {
-    let scoreListTemplate = `  
-        <div class="d-flex align-items-center py-2 justify-content-between border-bottom border-gray">
-            <div class="d-flex align-items-center media">
-                <img class="mr-2" width="60" height="60" src="img/Avatar1.svg" alt="">
-                <p class="media-body  mb-0 small">
-                <strong class="d-block ">@__STUDENTNAME__</strong>
-                </p>
-            </div>
-                <h5 class="score-box m-0">
-                __STUDENTSCORE__ Puan
-                </h5>
-            </div>`
     const introRender = new AppManger();
     let localDB = introRender.dbManager.getItem(introRender.appName);
-    scoreListTemplate
-    
-    let loginBtn = document.querySelector(".login-button");
+
+    const scorListSummary = localDB.reduce((carry, item) => {
+        carry += scoreListTemplate
+            .replace(/__STUDENTNAME__/, item.name)
+            .replace(/__STUDENTSCORE__/, item.score)
+            .replace(/__STUDENTICON__/, item.id)
+        return carry;
+    }, "");
+    introScoreList.innerHTML = scorListSummary;
     loginBtn.addEventListener("click", function () {
         const userName = document.querySelector("#user-name").value;
         const userPass = document.querySelector("#user-pass").value;
-        introRender.login(userName, userPass)
+        introRender.login(userName, userPass);
+        document.querySelector(".close").click();
+        reStart();
     })
 }
 renderIntro();
+
+function reStart() {
+    const manager = new AppManger();
+    const introStudentData = manager.dbManager.getItem("currentStudent");
+    //yeni yontem (!!=> true | (!=>false döndürür
+    if (!!introStudentData) {
+        document.querySelector("body").classList.add("is-login");
+        const quizHeadingResult = quizHeadingTemplate
+            .replace(/__STUDENTNAME__/, introStudentData.name)
+            .replace(/__STUDENTSCORE__/, introStudentData.score)
+            .replace(/__STUDENTICON__/, introStudentData.id);
+        quizHeading.innerHTML = quizHeadingResult;
+    }
+}
+reStart();
+
+quizStartBtn.addEventListener("click", function () {
+    quizStart();
+    this.remove();
+    quizMainBox.classList.remove("d-none");
+    quizMainBox.classList.add("d-flex");
+})
+
+function quizStart() {
+    const generatedQuestion = new QuestionGenerator();
+    numberFirst.innerHTML = generatedQuestion.firstNumber;
+    numberSecond.innerHTML = generatedQuestion.secondNumber;
+    quizGuess.addEventListener("change", guessValue);
+
+    function guessValue(e) {
+        if (parseInt(generatedQuestion.result) === parseInt(e.target.value)) {
+            quizGuessResult.innerHTML = "Dogru";
+            quizGuessResult.classList.add("alert-success");
+        } else {
+            quizGuessResult.innerHTML = "Yanlis";
+            quizGuessResult.classList.add("alert-danger");
+        }
+
+    }
+    const studentliveData = new Student();
+    studentliveData.studentNewData();
+
+
+}
