@@ -1,128 +1,64 @@
-class Question {
-    constructor(firstNumber, secondNumber, answer) {
-        this.date = new Date().toDateString();
-        this.expected = firstNumber * secondNumber;
-        this.score = this.expected == answer;
-        this.firstNumber = firstNumber;
-        this.secondNumber = secondNumber;
-        this.answer = answer;
-    }
+let eventManager = new Events();
+let introScoreList = document.querySelector(".intro-score-list");
+let loginClose = document.querySelector(".close");
+let logOutBtn = document.querySelector(".logout-btn");
+let loginBtn = document.querySelector('.login-button');
+let userPassInput = document.querySelector('#userPass');
+let userNameInput = document.querySelector('#userName');
+let body = document.querySelector("body");
+let loginCheckAlert = document.querySelector(".login-control-alert");
+let activeUserNameContainer = document.querySelector(".active-user-name");
+let activeUserScoreContainer = document.querySelector(".user-score");
+let quizContainer = document.querySelector(".quiz-container");
+let quizContainerHeading = document.querySelector(".quiz-container");
+let quizHeading = document.querySelector(".quiz-heading");
+let quizMainBox = document.querySelector(".quiz-main-box");
+let startQuiz = document.querySelector(".start-to-quiz");
+let quizGuessResult = document.querySelector(".quiz-guess-result");
+let quizNumberFirst = document.querySelector(".number-one");
+let quizNumberSecond = document.querySelector(".number-two");
+let quizGuessInput = document.querySelector(".quiz-guess");
+let timerBox = document.querySelector("#timer-box");
+
+const appPrefix = {
+    students: '__CarpimTablosuApp__allStudents',
+    currentStudent: "__CarpimTablosuApp__currentStudent",
 }
 
-class Person {
-    constructor(name) {
-        this.name = name;
-        this.tests = [];
-    }
+let appStartData = [
+  { userId: 1, userName: 'Mahmut', userPassword: '1234', userScore: 0 },
+  { userId: 2, userName: 'Onur', userPassword: '2468', userScore: 0 },
+  { userId: 3, userName: 'Batu', userPassword: '1357', userScore: 0 }
+];
+  
+let introListTemplate = `
+<div class="d-flex align-items-center justify-content-between py-2 border-bottom border-gray scoreboard-list-item">
+  <div class="d-flex align-items-center">
+    <img class="mr-2 rounded" src="img/user-__STUDENTICON__.svg" width="80" height="80">
+    <div class="media-body mb-0 small lh-125">
+      <div class="d-flex justify-content-between align-items-center w-100">
+        <h5 class="text-gray-dark">__STUDENTNAME__</h5>
+      </div>
+    </div>
+  </div>
+  <h4 class="user-score">
+    <span class="badge badge-success">__STUDENTSCORE__</span> <small>Puan</small>
+  </h4>
+</div>
+`;
 
-    addQuiz(quiz) {
-        this.tests.push(quiz);
-    }
-
-    printResults() {
-        this.tests.quizes.forEach(question => {
-            console.log(this.name, question.date, question.firstNumber,
-                question.secondNumber, question.answer, question.expected,
-                question.score);
-        })
-    }
-}
-
-class DBManager {
-    constructor() {
-        this.db = localStorage;
-    }
-
-    setItem(key, value) {
-        // key ve value string olmasi lazim
-        value = JSON.stringify(value);
-        this.db.setItem(key, value);
-    }
-
-    getItem(key) {
-        const data = this.db.getItem(key);
-        return JSON.parse(data);
-    }
-}
-
-
-class Manager {
-    constructor(name) {
-        this.appName = 'kerrat';
-        this.students = [];
-        this.dbManager = new DBManager();
-        this.firstNumber = this.random();
-        this.secondNumber = this.random();
-        this.setInitialData();
-        this.addLoginEventListener();
-    }
-
-    setInitialData() {
-        const initialData = {
-            settings: {
-                userName: 'Ahmet',
-                password: 'secret'
-            },
-            students: []
-        };
-
-        this.dbManager.setItem(this.appName, initialData);
-    }
-
-
-    addLoginEventListener() {
-        document.querySelector('.login-button').addEventListener('click', this.login.bind(this));
-    }
-
-    addToDom(target, value) {
-        document.querySelector(target).innerHTML = value;
-    }
-
-    login(e) {
-        const password = e.target.parentNode.querySelector('input[type=text]').value;
-        if (!password) {
-            this.addToDom('.message', 'Lütfen gecerli bir password giriniz');
-            return;
-        }
-
-        const appInfo = this.dbManager.getItem(this.appName);
-        if (appInfo.settings.password == password) {
-            this.addToDom('.message', 'Hosgeldin admin!');
-        }
-        //if()
-        console.log(password);
-    }
-
-    random() {
-        return Math.floor(Math.random() * 9);
-    }
-
-    addStudent(name) {
-        this.students.push(new Person(name))
-    }
-
-    start() {
-        // inputlari doldur
-    }
-
-    check() {
-        // ilk, ikinci ve sonuc sayilarini html den al
-        this.person.addQuiz(new Question(this.firstNumber, this.secondNumber, 22));
-        this.person.printResults();
-    }
-}
-
-console.log('disardan getir', getData())
-
-function getData() {
-    const manager = new Manager('ahmet');
-    return manager.dbManager.getItem(manager.appName);
-}
-
-
-
-
-
-
-
-//manager.check();
+let quizHeadingTemplate = `
+<div class="d-flex align-items-center justify-content-between border-bottom border-gray">
+  <div class="d-flex align-items-center">
+    <img alt="32x32" class="mr-2 rounded" src="img/user-__STUDENTICON__.svg" width="100" height="100">
+    <div class="media-body mb-0 small lh-125">
+      <div class="d-flex justify-content-between align-items-center w-100">
+        <h5 class="text-gray-dark active-user-name">__STUDENTNAME__</h5>
+      </div>
+    </div>
+  </div>
+  <h3 class="user-score-box">
+      Toplam Puanın: <span class="user-score">__STUDENTSCORE__</span>  
+  </h3>
+</div>
+`;

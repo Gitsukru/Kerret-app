@@ -1,124 +1,107 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="tr">
 
 <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="stylesheet" href="./style.css">
-    <title>Kerrat app!</title>
+  <meta charset="UTF-8">
+  <title>Kerrat app</title>
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css'>
+  <link rel="stylesheet" href="./style.css">
 </head>
 
-<body>
-
-    <main role="main" class="container">
-
-        <div
-            class="d-flex align-items-center justify-content-between p-3 my-3 text-white-50 bg-purple rounded shadow-sm">
-            <div class="d-flex align-items-center">
-                <img class="mr-3" src="img/logo.svg" alt="" width="100" height="100">
-                <div class="lh-100">
-                    <h6 class="mb-0 text-white lh-100">Kerrat alistirma</h6>
-                    <small>Since 2011</small>
-                </div>
-            </div>
-            <button type="button" class="btn btn-outline-light btn-md" data-toggle="modal" data-target="#login-modal">
-                <img class="mr-1" width="40" height="40" src="img/login.png" alt=""> Giris yap</button>
+<body class="">
+  <main role="main" class="container-sm">
+    <div class="d-flex align-items-center justify-content-between p-3 my-3 text-white-50 bg-purple rounded shadow-sm">
+      <div class="d-flex align-items-center ">
+        <img class="mr-3" src="./img/logo.svg" alt="" width="100" height="100">
+        <div class="lh-100">
+          <h3 class="mb-0 text-white lh-100">Çarpım Tablosu</h3>
+          <small>Bilgini test et</small>
         </div>
-
-        <div class="my-3 p-3 bg-white rounded shadow-sm score-list-container flipInX">
-            <h6 class="border-bottom border-gray pb-2 mb-0">Skor tablosu</h6>
-            <div class="intro-score-list">
-
-            </div>
-
-        </div>
-        <div class="my-3 p-3 bg-white rounded shadow-sm student-test-panel flipInX">
-
-            <div class="quiz-container">
-                <div class="quiz-heading">
-                   
-                </div>
-                <div class="d-flex justify-content-center timer-box alert alert-success">
-                    <small class="mr-1">Timer</small>
-                    <span class="badge badge-dark count-down-box">0:10</span>
-                </div>
-
-                <button
-                    class="btn btn-success btn-lg btn-block d-flex align-items-center justify-content-center quiz-start-btn py-5">
-                    <img class="quiz-start-img mr-2" src="https://image.flaticon.com/icons/svg/748/748890.svg" alt="">
-                    <h2 class="quiz-start-text ">Start quiz</h2>
-                </button>
-                <div class="d-none align-items-center justify-content-center flipInX quiz-main-box">
-                    <div class="number-first"></div>
-                    <div class="number-separator mx-3">X</div>
-                    <div class="number-second"></div>
-                    <div class="number-equal mx-3">=</div>
-                    <input class="quiz-guess text-center" type="text" value="">
-                    <div class="alert ml-3 mb-0 quiz-guess-result"></div>
-                </div>
-            </div>
-
-        </div>
-
-
-    </main>
-    <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Giris paneli</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group row">
-                            <label class="col-sm-4" for="user-name">kullanici adi</label>
-                            <div class="col-sm-8">
-                                <input type="tel" class="form-control" id="user-name">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-4" for="user-pass">Sifre</label>
-                            <div class="col-sm-8">
-                                <input type="password" class="form-control" id="user-pass">
-                            </div>
-                        </div>
-                        <div class="alert alert-danger login-control-alert" style="display:none">
-                            Kullanici adiniz yada sifreniz hatali !
-                        </div>
-                        <div class="d-flex justify-content-end">
-                            <button type="button" class="btn btn-success login-button">Giris</button>
-                        </div>
-                    </form>
-
-                </div>
-            </div>
-        </div>
+      </div>
+      <button class="btn btn-light login-btn" data-toggle="modal" data-target="#loginModal">
+        <img src="https://image.flaticon.com/icons/svg/1000/1000997.svg" width="30" height="30" alt="">
+        Giriş yap
+      </button>
+      <button class="btn btn-warning logout-btn">
+        <img src="https://image.flaticon.com/icons/svg/1000/1000997.svg" width="30" height="30" alt="">
+        Çıkış yap
+      </button>
     </div>
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-        crossorigin="anonymous"></script>
-
-    <!-- <script src="./dom.js"></script> -->
-    <script src="./function.js"></script>
-    <script src="./model.js"></script>
-    <script src="./app.js"></script>
+    <div class="my-3 p-3 bg-white rounded shadow-sm position-relative score-list-container flipInX">
+      <h4 class="pb-2 mb-3 question-title">Skor Listesi</h4>
+      <div class="mt-3 intro-score-list">
+      </div>
+    </div>
+    <div class="my-3 p-3 bg-white rounded shadow-sm position-relative students-test-panel flipInX">
+      <div class="quiz-container">
+        <div class="quiz-heading">
+        </div>
+        <div class="d-flex flex-column align-items-center justify-content-center mt-4">
+          <h4 class="d-flex align-items-center justify-content-between alert alert-success count-down-box ">
+            <small class="mr-1">Her soruyu Çözme süresi</small> <span class="badge badge-dark"
+              id="timer-box">0:10</span>
+          </h4>
+          <button type="button"
+            class="d-flex align-items-center justify-content-center btn btn-success btn-lg btn-block py-5 start-to-quiz">
+            <img class="quiz-start-icon" src="https://image.flaticon.com/icons/svg/1944/1944882.svg">
+            <h2 class="quiz-start-text ml-4"> Çarpmaya Başla</h2>
+          </button>
+        </div>
+        <div class="d-none align-items-center justify-content-center quiz-main-box flipInX">
+          <div class="number-one"> </div>
+          <div class="number-separator mx-4">X</div>
+          <div class="number-two"> </div>
+          <div class="number-separator mx-4"> = </div>
+          <input class="quiz-guess  ml-4" type="text" value="" />
+          <div class="alert  quiz-guess-result ml-2">
+            <!-- sonucu buraya yaz -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="loginModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">GİRİŞ YAP</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body selected-answer-result">
+            <form class="px-2 login-submit">
+              <div class="form-group row">
+                <label class="col-sm-4" for="userName">Kullanıcı Adı</label>
+                <div class=" col-sm-8">
+                  <input class="form-control" type="text" id="userName" placeholder="Kullanıcı Adı">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-4" for="userPass">Şifre</label>
+                <div class=" col-sm-8">
+                  <input class="form-control " type="password" id="userPass" placeholder="Şifre">
+                </div>
+              </div>
+              <div style="display: none;" class="alert alert-danger login-control-alert" role="alert">
+                Kullanıcı adınız veya şifreniz yanlış!
+              </div>
+              <div class="d-flex justify-content-end">
+                <button type="button" class="btn btn-success login-button">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <script src="./helpers.js"></script>
+  <script src="./dom.js"></script>
+  <script src="./app.js"></script>
+  <script src="./function.js"></script>
+  </script>
 </body>
 
 </html>
